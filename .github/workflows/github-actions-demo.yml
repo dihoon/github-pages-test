@@ -11,9 +11,6 @@ jobs:
     steps:
         uses: actions/checkout@v2
 
-      - name: Checkout submodules
-        shell: bash
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with: 
