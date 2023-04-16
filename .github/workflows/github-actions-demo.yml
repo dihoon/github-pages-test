@@ -1,36 +1,31 @@
-name: Github Actions Demo
+name: github pages
 
-on: 
+on:
   push:
     branches:
-      - main
+    - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-deploy:
+    runs-on: ubuntu-18.04
     steps:
-      - name: checkout version 2
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      shell: bash
+      run: |
+        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+        git submodule sync --recursive
+        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with: 
-          node-version: 'latest'
+    - name: Build
+      run: |
+        npm ci
+        npm run build
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os}}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - run: | 
-          npm ci
-          npm run build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.TEST_KEY }}
-          publish_branch: gh-pages
-          publish_dir: ./build
-          allow_empty_commit: true
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3.7.3
+      with:
+        deploy_key: ${{ secrets.TEST_KEY }}
+        publish_branch: gh-pages
+        publish_dir: ./build
+        allow_empty_commit: true
