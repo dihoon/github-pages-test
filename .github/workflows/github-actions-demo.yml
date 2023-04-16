@@ -29,6 +29,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.test_key }}
+          deploy_key: ${{ secrets.TEST_KEY }}
           publish_branch: gh-pages
           publish_dir: ./build
+          allow_empty_commit: true
