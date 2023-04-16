@@ -9,10 +9,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name : Checkout Version 2
         uses: actions/checkout@v2
 
-      - name: Setup Node Version 3
+      - name: Checkout submodules
+        shell: bash
+
+      - name: Setup Node
         uses: actions/setup-node@v3
         with: 
           node-version: 'latest'
@@ -29,7 +31,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.TEST_KEY }}
+          github_token: ${{ secrets.TEST_KEY }}
           publish_branch: gh-pages
           publish_dir: ./build
           allow_empty_commit: true
