@@ -26,7 +26,7 @@ jobs:
       run: hugo --gc --minify --buildFuture --cleanDestinationDir
 
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3.7.3
+      uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.TEST_KEY }}
         publish_branch: gh-pages
