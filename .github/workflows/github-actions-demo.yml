@@ -1,16 +1,24 @@
+# the name of workflow
 name: CI
 
+# define which events can cause the workflow to run, 
 on: 
+  # push event
   push:
-    branches: main
+    branches: 
+      - main
 
+#  a workflow run is made of one or more jobs 
 jobs:
+  # job name
   deploy:
+    # the type of machine that the job will run on
     runs-on: self-hosted
+    # to use matrix strategy use strategy
     strategy:
       # define a matrix of different job configurations
       matrix:
-        node-version: latest
+        node-version: [18.v]
     # steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # checkout my repository under $GITHUB_WORKSPACE, so my job can access it
