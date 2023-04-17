@@ -1,34 +1,33 @@
-name: github pages
+# the name of workflow
+name: CI
 
-on:
-  push:
-    branches:
-    - main
+# define which events can cause the workflow to run, 
+on: [ push ]
+  # 
+  branches: [ main ]
 
+#  a workflow run is made of one or more jobs 
 jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
+  # job name
+  deploy:
+    # the type of machine that the job will run on
+    runs-on: self-hosted
+    # to use matrix strategy use strategy
+    strategy:
+      # define a matrix of different job configurations
+      matrix:
+        node-version: latest
+    # steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v2
-    - name: Checkout submodules
-      shell: bash
-      run: |
-        auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-        git submodule sync --recursive
-        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Setup Hugo
-      uses: peaceiris/actions-hugo@v2.4.13
-      with:
-        hugo-version: '0.83.1'
-        extended: true
+      # checkout my repository under $GITHUB_WORKSPACE, so my job can access it
+      - uses: actions/checkout@v2
+      # task name
+      - name: Run a one-line script
+        # runs a single command using the runners shell
+        run: echo Hello, world!
 
-    - name: Build
-      run: hugo --gc --minify --buildFuture --cleanDestinationDir
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        deploy_key: ${{ secrets.TEST_KEY }}
-        publish_branch: gh-pages
-        publish_dir: ./build
-        allow_empty_commit: true
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy my project
