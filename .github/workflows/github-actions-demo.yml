@@ -1,18 +1,11 @@
-# the name of workflow
 name: CI
 
-# define which events can cause the workflow to run, 
 on: [ push ]
-  # 
   branches: [ main ]
 
-#  a workflow run is made of one or more jobs 
 jobs:
-  # job name
   deploy:
-    # the type of machine that the job will run on
     runs-on: self-hosted
-    # to use matrix strategy use strategy
     strategy:
       # define a matrix of different job configurations
       matrix:
