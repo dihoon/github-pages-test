@@ -3,7 +3,7 @@ name: Deploy to github pages
 
 # define which events can cause the workflow to run, 
 on: 
-  # push event.
+  # push event
   push:
     branches: [ main ]
 
